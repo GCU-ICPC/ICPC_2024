@@ -1,0 +1,132 @@
+### 2024.06.26
+### Authored by Choi YunSeo
+# **BOJ 1406 에디터**
+
+## 1. Code
+ ```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+
+int main() {
+	ios::sync_with_stdio(0);
+	// cin.tie(0);
+
+	string txt;
+	cin >> txt;
+
+	
+	list<char> v1;
+	for (int i = 0; i < txt.length(); i++) {
+		v1.push_back(txt[i]);
+	}
+	list<char>::iterator iter = v1.end();
+
+	int N;
+	cin >> N;
+
+	string op;
+	while (N--) {
+		cin >> op;
+		// insert
+		if (op == "P") {
+			char x;
+			cin >> x;
+			v1.insert(iter, x);
+		}
+		// delete
+		else if (op == "B") {
+			if (iter != v1.begin()) {
+				iter = v1.erase(--iter);
+			}
+		}
+		// left
+		else if (op == "L") {
+			if (iter != v1.begin()) {
+				iter--;
+			}
+		}
+		// right
+		else if(op == "D") {
+			if (iter != v1.end()) {
+				iter++;
+			}
+		}
+		// error
+		else {
+			return 1;
+		}
+	}
+	for (auto c : v1) {
+		cout << c;
+	}
+} 
+```
+***
+
+## 2. output
+```cpp
+// input
+abc
+3
+P x
+L
+P y
+
+// output
+abcyx
+```
+***
+
+## 3. Approach
+### Pseudo code
+```
+procedure editor{
+    txt := text entered by user
+    v1 := txt stored as vector
+    iter := point at end of v1
+    N := num of operations
+    op := operation
+
+    while N-- is bigger than 0
+        if op is "P"
+            x := character to insert
+            insert x at iter of v1
+        else if op is "B"
+            if iter is not begin of v1
+                erase value which iter points to
+        else if op is "L"
+            if iter is not begin of v1
+                iter--;
+        else if op is "D"
+            if iter is not end of v1
+                iter++;
+        else
+            error
+    return v1
+}
+```
+
+### Explanation for Psuedo code
+how to approach
+1. The user receives text and the number of commands.   
+2. The user receives commands consisting of **P, B, D, and L**.   
+3. If `P` is input, an additional character is input. Add the input character to the location it points to.   
+4. If `B` is entered, `iter` points to the front of the vector and ignores the command. If `iter` does not point to the front, move `iter` to the left and delete the character it points to. After that, update `iter` to `v1.erase(--iter)`.   
+5. If `D` is entered, ignore it when `iter` points to the back of the vector, otherwise    increase it by $1$.   
+6. If `L` is entered, ignore it when `iter` points to the front of the vector, otherwise decrease it by $1$.   
+
+***
+
+## 4. Analysis
+### Correctness
+`erase(...)` returns next iterator. So, update `iter` as `v1.erase(--iter)`.   
+In the case of `B` and `D`, an exception must be made when `iter` points to the front of `v1`. Similarly, in the case of `L`, an exception is required when `iter` points to the back of `v1`.
+
+### Performance
+This time complexity has $O(n)$.
+
+***
+
+## 5. Future Work
+There are no more better codes, then you don't need to write this.
