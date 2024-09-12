@@ -1,0 +1,714 @@
+%% ICPC/TopCoder/CodeForces 상위랭커 
+%% http://k2code.blogspot.kr/2012/01/given-integer-array-and-number-x-find.html
+
+\documentclass{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{fullpage}
+\usepackage{listings}% http://ctan.org/pkg/listings
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+\usepackage{times}
+\usepackage{url}
+\usepackage[colorlinks=true, linkcolor=blue,]{hyperref}
+\usepackage{xcolor}
+\usepackage{tikz,subfig}
+\usetikzlibrary{topaths}
+\usetikzlibrary{calc, arrows}
+\tikzset{
+  treenode/.style = {align=center, inner sep=0pt, text centered,
+    font=\ttfamily},
+  arn_n/.style = {treenode, circle, draw=black,
+    text width=1.5em},% arbre rouge noir, noeud noir
+  arn_r/.style = {treenode, circle, red, draw=red, 
+    text width=1.5em, very thick},% arbre rouge noir, noeud rouge
+  arn_x/.style = {treenode, rectangle, draw=black,
+    minimum width=0.5em, minimum height=0.5em}% arbre rouge noir, nil
+}
+
+%\newcommand{\list}{\mathfrak{L}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\dv}{{\mathrm{div}}}
+\newcommand{\md}{{\mathrm{mod}}}
+\newcommand{\lcm}{{\mathrm{lcm}}}
+\newcommand{\M}[2]{{\mathfrak{M}_{#1\times #2}}}
+\newcommand{\sm}[2]{{\mathfrak{S}_{#1\times #2}}}
+\newcommand{\sgn}{{\mathrm{sgn}}}
+
+\newenvironment{psmallmatrix}
+  {\left(\begin{smallmatrix}}
+  {\end{smallmatrix}\right)}
+
+\newtheorem{df}{Definition}[section]
+
+\date{March 16, 2018}
+\title{The 5\textsuperscript{th} Problem Set}
+
+\begin{document}
+\maketitle
+\section*{Pre-requisites}
+You should do the followings
+\begin{enumerate}
+\item On a separate and clean paper,  you need to describe your own strategy to solve the problems below, and 
+	to justify why your strategy is effective while handling each problem
+\item On a new clean paper, transform your strategy into an algorithm, using your own form to express algorithms.
+	Further, you need to analyze the total running steps of your algorithm and the required memory amount to finish your algorithm.
+	Then express the total costs using Big-O notation.
+\item Use the \texttt{Code ocean} (\url{https://codeocean.com}) platform; if necessary, you may invite me using my email address 
+\texttt{lightsun.kim@gmail.com}.
+\item Time limits for each problem
+\begin{itemize}
+\item Problem \#1: Within 1.5 hours
+\item Problem \#2: Within 5 hours
+\item Problem \#3: Within 1.5 hours
+\item Problem \#4: Within 2 hours
+\end{itemize}
+Then you need to prepare two answer codes; one is a C code that you have made within each time limit, and the
+other is a C code augmented and fixed from the original code later.
+\end{enumerate}
+
+\newpage
+
+\section*{Problem \#1}
+
+
+Let $\M{n}{m}(F)$ be the set of $n\times m$ matrices over a set $F$ for positive integers $n,m$. 
+When we write $A\in\M{n}{m}(F)$, 
+ we will write an $n\times m$ matrix  $A=(a_{ij})=
+		\begin{psmallmatrix} 
+				a_{11}&\cdots&a_{1m}\\ 
+				\vdots & \ddots &\vdots\\
+				a_{n1} & \cdots & a_{nm}
+				\end{psmallmatrix}$ for all real numbers $a_{ij}\in F$.  
+For $A\in\M{n}{m}(F)$, let $A^t$ be the transpose matrix of $A$; then $A^t=(a_{ji})$ and thus $A^t$ is an $m\times n$ 
+matrix whose element at $(i,j)$ is $a_{ji}$ of $A$.		
+A sparse matrix $\sm{n}{m}\subsetneq \M{n}{m}$ is a special case of $n\times m$ matrices, but
+it has at most 25\% non-zero elements. For example,  we say that $A\in\sm{4}{4}$ when its non-zero elements are two.
+
+
+To obtain the transpose matrix $A^t$ of $A\in\sm{n}{m}$, a straightforward method relies on a nested $\mathtt{for}$ loop  
+in terms of rows and columns. Accordingly, the straightforward method requires $O(nm)$ run-time complexity; 
+More precisely, transposition requires $O(nm)$ integer comparisons and thus one needs to use such a nested $\mathtt{for}$
+loop.
+
+
+Now the mission in this problem is to devise an efficient algorithm to transpose $A$ into $A^t$ with 
+$O(n+m)$ run-time complexity. To this end, you may need to use additional memory spaces.
+
+
+\bigskip
+\noindent\textbf{Language requirements. }%
+During tackling this problem, you should follow the programming rules:
+\begin{itemize}
+\item You should use an ANSI C programming language whose source code can run on \texttt{Code ocean} platform. 
+\item Function naming: Begin with the lower character, and every parameters are strong-typed variables (i.e., do not use \texttt{void} typed variables).
+	All functions should have a single return value; thus even if a function will return no values; you should provide \texttt{return} keyword.
+\item Variable naming: Begin with a type-discriminating prefix. For example, if a variable name is for an age and is with an integer type,
+	you need to declare the variable as \texttt{int iAge;}  Especially for string-type variables you are strongly recommended to use the prefix \texttt{sz}.
+	For example, if a variable name is for a name, then \texttt{szName} is a preferable choice.
+\end{itemize}
+
+
+\bigskip
+\noindent\textbf{Input format.} %
+The input is given a text-format file, named \texttt{input.txt} and all strings are separated by blanks.
+The file contains the dimension $(n,m)$ of matrix and an indicator $T$ for a base set $F$ by which 
+the data type of the input matrix is determined. %We mentioned it as a base set $F$. 
+As an example, $T$ can be chosen from a predefined list 
+$(\mathtt{Z},\mathtt{Q},\mathtt{R},\mathtt{C},\ldots)$ where $\mathtt{Z}$ means the integers, $\mathtt{Q}$ 
+means the rational numbers and so on. Of course, you can specify a customized set such as a set $\mathtt{V}$
+whose elements are positive and even numbers.
+In addition, the file should specify all $n\times m$ elements of a sparse matrix $A\in\sm{n}{m}$; thus the input file is given in form as follows:
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+(n m)
+T
+$a_{11}\ a_{12}\ \ldots\ a_{1m}$
+$a_{21}\ a_{22}\ \ldots\ a_{2m}$
+$\cdots$
+$a_{n1}\ a_{n2}\ \ldots\ a_{nm}$
+\end{lstlisting}
+
+
+
+\bigskip
+\noindent\textbf{Output format.} %
+The output should be given as a text-format file, named \texttt{output.txt}.
+The output file writes the transpose matrix $A^t\in\sm{m}{n}$ of $A\in\sm{n}{m}$. 
+Moreover, you are required to implement two algorithms; one is a basic algorithm whose complexity is $O(mn)$ and 
+the other is its improved version whose complexity is $O(n+m)$. 
+For this reason, a comparison of execution times between two algorithms should be given beneath the transpose matrix.
+
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+$a_{11}\ a_{21}\ \ldots\ a_{m1}$
+$a_{12}\ a_{22}\ \ldots\ a_{m2}$
+$\cdots$
+$a_{1n}\ a_{2n}\ \ldots\ a_{mn}$
+**************************************
+O(n^2): ____ msec vs. O(n): ____ msec
+**************************************
+\end{lstlisting}
+
+
+ 
+ 
+\newpage
+\section*{Problem \#2}
+
+Let $[1,n]:=\{1,2,\ldots,n\}$ for convenience.
+Let $S_n$ be the set of all permutations $\sigma$ over  where a bijective function from 
+$[1,n]$ to $[1,n]$ is a permutation. That is,
+\begin{equation*}
+S_n=\left\{\sigma\big|\text{$\sigma:[1,n]\rightarrow[1,n]$ is a bijection}\right\}
+\end{equation*}
+Then we can see that $|S_n|=n!$. For some $\sigma\in S_n$, usually we would write
+\begin{equation*}
+\sigma=\begin{pmatrix}
+		1 & 2 & \cdots & n\\
+		\sigma(1) & \sigma(2) & \cdots & \sigma(n) 
+		\end{pmatrix},
+\end{equation*}
+but from now on, we use $\sigma=(i_1,i_2,\ldots, i_k)\in S_n$ for some $k\leq n$ to denote
+a permutation defined by
+\begin{equation*}
+\begin{cases}
+\sigma(i_j)=i_{j+1}, & \text{$j=1,2,\ldots,k-1$}\\
+\sigma(i_k)=i_1, & \\
+\sigma(\ell)=\ell, & \text{$\ell\not\in\{i_1,i_2,\ldots,i_k\}$}
+\end{cases}
+\end{equation*}
+For example, $\sigma=(1,3,4,5)\in S_6$ means 
+\begin{equation*}
+\sigma = \begin{pmatrix}
+			1 & 2 & 3 & 4 & 5 & 6\\
+			3 & 2 & 4 & 5 & 1 & 6
+		\end{pmatrix}.
+\end{equation*}
+Hereafter we call $(i_1,i_2,\ldots,i_k)\in S_n,$  \textbf{$k$-cycle} and in particular, when $k=2$ we call $(i_1,i_2)$ 
+\textbf{transposition}. In fact, since $\sigma(i_1)=i_2$ and $\sigma(i_k)=i_1$,
+it is obvious that these permutations are cyclic.
+Furthermore, we can easily check that if $\sigma$ is a transposition, then $\sigma\circ\sigma=id$ and 
+$\sigma^{-1}=\sigma$ where $\circ$ is the composition of functions
+and $id$ is the identity function.
+For example $(1,2)\circ (1,2)=id$.
+
+Interestingly, all permutations can be written as a composition of disjoint cycles. 
+For example, $\sigma=\begin{psmallmatrix} 1 & 2 &3 &4 &5 &6 &7 &8 &9 \\
+											3 &9& 6 &5 &7 &1 &4 &8 &2\end{psmallmatrix}.$
+Then because it has $1 \mapsto 3\mapsto 6\mapsto 1$, there is a 3-cycle $(1,3,6)$, 
+similarly because it has $4\mapsto 5\mapsto 7\mapsto 4$ we can find another 3-cycle $(4,5,7)$.
+Further, we can find a 2-cycle $(2,9)$ and that the permutation fixes 8. 
+Hence, $\sigma=(1,3,6)\circ(4,5,7)\circ(2,9).$
+Generally speaking, since any permutation in $S_n$ is a composition of cycles and 
+any cycle is a composition of transpositions, any permutation in $S_n$ is a composition of transpositions.
+For example, consider $\sigma^\ast=(1,5,2,4,3)$. Then two expressions for $\sigma^\ast$ as a composition of transpositions are
+\begin{equation*}
+\sigma^\ast=(1,5)\circ(5,2)\circ(2,4)\circ(4,3)
+\end{equation*}
+and
+\begin{equation*}
+\sigma^\ast=(1,2)\circ(3,4)\circ(2,3)\circ(1,2)\circ(2,3)\circ(3,4)\circ(4,5)\circ(3,4)\circ(2,3)\circ(1,2).
+\end{equation*}
+
+For an arbitrary permutation $\sigma\in S_n$, we can write it as
+a composition of $r$ transpositions,
+\begin{equation*}
+\sigma=(i_1,i_2,\ldots,i_k)=\tau_1\circ\tau_2\circ\cdots\circ\tau_r
+\end{equation*}
+where the $\tau_i$'s are transpositions and $r$ is the number of transpositions.
+Although the $\tau_i$'s are not determined uniquely, $r \mod 2$ is determined uniquely 
+(if $r\mod 2=0$, then $r$ is even; otherwise $r$ is odd). 
+For instance, the two expressions for $\sigma^\ast=(1,5,2,4,3)$ as above involve $4$ and $10$ transpositions, 
+which are both even because $4\mod 2=10\mod 2=0$. This fact makes it possible to define the sign function for a
+permutation as follows.
+
+
+
+\begin{df}[sign]
+Let $S_n$ be defined as above. Given $\sigma\in S_n$, we define the function $\sgn:S_n\rightarrow \{\pm 1\}$  by
+\begin{equation*}
+\sgn(\sigma)=(-1)^r
+\end{equation*}
+when the permutation $\sigma$ is the composition of $r$ transpositions.
+We call the function $\sgn$ signum or \textbf{sign} of the permutation $\sigma$.
+\end{df}
+
+
+Now let us turn back to the main point. This problem interests in computing the determinants of arbitrary square matrices 
+in $\M{n}{n}(F)$.
+Given a square matrix $A=(a_{ij})\in\M{n}{n}(F)$ with each $a_{ij}\in F$ for a base set $F$, 
+the determinant of $A$ is defined as a function $\det(A):\M{n}{n}(F)\rightarrow F$ and denoted by $\det(A)$.
+More concretely,  for a given matrix $A\in\M{n}{n}(F)$ we define the determinant of $A$  by 
+\begin{equation*}
+\det(A)=\sum_{\sigma\in S_n}\sgn(\sigma)\cdot a_{\sigma(1),1}\cdot a_{\sigma(2),2}\cdots a_{\sigma(n),n}
+\end{equation*}
+For example, consider a matrix $B=\begin{psmallmatrix} 2 & 3 \\ 1 & 2 \end{psmallmatrix}\in\M{2}{2}(\Z)$
+where $F=\Z$. 
+Then since $\sigma_1=(1,2),\sigma_2=(2,1)$, we see that 
+\begin{align*}
+\det(B)&=\sum_{\sigma\in S_2}\sgn(\sigma)a_{\sigma(1),1}a_{\sigma(2),2}\\
+	&=\sgn(\sigma_1)a_{1,1}a_{2,2}+\sgn(\sigma_2)a_{2,1}a_{1,2}\\
+	&=(-1)^0\cdot 2\cdot 2+(-1)^1\cdot 3\cdot 1\\
+	&=1.
+\end{align*}
+
+\bigskip
+\noindent\textbf{Language requirements. }%
+During tackling this problem, you should follow the programming rules:
+\begin{itemize}
+\item You should use an ANSI C programming language whose source code can run on \texttt{Code ocean} platform. 
+\item Function naming: Begin with the lower character, and every parameters are strong-typed variables (i.e., do not use \texttt{void} typed variables).
+	All functions should have a single return value; thus even if a function will return no values; you should provide \texttt{return} keyword.
+\item Variable naming: Begin with a type-discriminating prefix. For example, if a variable name is for an age and is with an integer type,
+	you need to declare the variable as \texttt{int iAge;}  Especially for string-type variables you are strongly recommended to use the prefix \texttt{sz}.
+	For example, if a variable name is for a name, then \texttt{szName} is a preferable choice.
+\end{itemize}
+
+
+\bigskip
+\noindent\textbf{Input format.} %
+The input is given a text-format file, named \texttt{input.txt} and all strings are separated by blanks.
+The file contains the dimension $(n,n)$ of matrix and an indicator $T$ for a base set $F$ by which 
+the data type of the input matrix is determined. 
+As mentioned before, you can specify a customized set such as a set $\mathtt{V}$
+whose elements are positive and even numbers.
+In addition, the file should specify all $n^2$ elements of $A\in\M{n}{m}(F)$; thus the input file is given in form as follows:
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+(n n)
+T
+$a_{11}\ a_{12}\ \ldots\ a_{1n}$
+$a_{21}\ a_{22}\ \ldots\ a_{2n}$
+$\cdots$
+$a_{n1}\ a_{n2}\ \ldots\ a_{nn}$
+\end{lstlisting}
+
+
+
+\bigskip
+\noindent\textbf{Output format.} %
+The output should be given as a text-format file, named \texttt{output.txt}.
+The output file writes the determinant of $A\in$ along with all elements.
+
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+$\lceil a_{11}\ a_{21}\ \ldots\ a_{m1}\ \rceil$
+$|a_{12}\ a_{22}\ \ldots\ a_{m2}\ |$
+$|\cdots\qquad\qquad\qquad\ |$ = $\det(A)$
+$|\cdots\qquad\qquad\qquad\  |$ 
+$\lfloor a_{1n}\ a_{2n}\ \ldots\ a_{mn}\rfloor$
+
+\end{lstlisting}
+
+
+% 
+\newpage
+\section*{Problem \#3} 
+
+In this problem we deal with a quite  simple problem that is almost never related with mathematics.
+Let $L$ be a sorted list of $n$ distinct integers; that is, $L=(a_1,a_2,\ldots,a_n)$ where 
+each $a_i\in[1,n+1]$. Then it is clear that in the list $L$, there is exactly one element $a\in[1,n+1]$ but 
+$a\not\in L$. Now design an efficient algorithm to 
+find the integer $a$ in this range that is not in $L$ while having $O(\log n)$ run-time complexity.
+However, as before in Problem \#1 you are required to present a naive algorithm with $O(n)$ 
+run-time complexity.
+
+\bigskip
+\noindent\textbf{Language requirements. }%
+During tackling this problem, you should follow the programming rules:
+\begin{itemize}
+\item You should use an ANSI C programming language whose source code can run on \texttt{Code ocean} platform. 
+\item Function naming: Begin with the lower character, and every parameters are strong-typed variables (i.e., do not use \texttt{void} typed variables).
+	All functions should have a single return value; thus even if a function will return no values; you should provide \texttt{return} keyword.
+\item Variable naming: Begin with a type-discriminating prefix. For example, if a variable name is for an age and is with an integer type,
+	you need to declare the variable as \texttt{int iAge;}  Especially for string-type variables you are strongly recommended to use the prefix \texttt{sz}.
+	For example, if a variable name is for a name, then \texttt{szName} is a preferable choice.
+\end{itemize}
+
+
+\bigskip
+\noindent\textbf{Input format.} %
+The input is given a text-format file, named \texttt{input.txt} and all strings are separated by blanks.
+The file first describes the number of elements $n>1000$ and an unsorted list $L^\ast=(a_1,\ldots,a_n)$.
+If $n\leq 10^3$, then abort the program. The order of each element $a_i$ is randomly selected during writing 
+it at the file and a missing element also should be randomly picked up.
+
+
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+n
+L*=$\{a_{1}\ a_{2}\ \ldots\ a_{n}\}$
+\end{lstlisting}
+
+
+
+\bigskip
+\noindent\textbf{Output format.} %
+The output should be given as a text-format file, named \texttt{output.txt}.
+The output file writes the sorted list $L$ and the finding result $a$ in different lines.
+In addition, you need to report on a comparison result between your $O(n)$ algorithm and $O(\log n)$ algorithm
+in milli-seconds. 
+During sorting the unsorted list $L^\ast$, you need to implement the $\mathtt{quicksort}$ algorithm but 
+your implementation should be an \textbf{iterative} version of the $\mathtt{quicksort}$ algorithm.
+Notice that do not copy any kinds of $\mathtt{quicksort}$ algorithms publicly open in the Internet; 
+instead refer to a proper textbook that describes the $\mathtt{quicksort}$ algorithm.
+Of course, sorting is not the main part of this problem.
+
+
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+L=$(a_{1}\ a_{2}\ \ldots\ a_{n})$
+
+****************************************
+O(n): ____ msec vs. O(log n): ____ msec
+****************************************
+\end{lstlisting}
+
+% 
+\newpage
+\section*{Problem \#4} 
+
+This problem has a similar setting as in problem \#3.
+However, this problem considers a concrete scenario as follows.
+Your mission is a part of automating a medicine prescription management system for 
+an imaginary company, named $\mathtt{Abc}$. 
+More specifically, When a prescription order comes into the automating system,
+it is given as a sequence of $\ell$ medication requests,
+\begin{equation*}
+\text{$a_1$ oz of drug $X_1$, $a_2$ oz of drug $X_2$},\ldots,\text{$a_\ell$ oz of drug $X_\ell$}
+\end{equation*}
+where $a_i\in\R$ (the reals) and $X_i$ is the name of medication. Examples of $X_i$'s include Acetaminophen,
+Chrolpheniramine maleate, or Pseudoephedrine hydrochloride. 
+We assume that $a_1<a_2<\cdots <a_\ell$.
+
+
+In reality, $\mathtt{Abc}$ has an unlimited supply of $n$ distinctly sized empty bottles for each medication.
+Each bottle has a tag specifying its capacity in ounces (for example, $4.23$ oz and $134$ oz). 
+To process a medication order, you need to match each medication \textbf{request}--``$a_i$ oz of drug $X_i$''
+with the \textbf{size} of the smallest bottle in the inventory 
+than can contain $a_i$ ounces.
+Therefore you need to design an algorithm to process such a medication order of $\ell$ requests 
+while requiring at most $O(\ell\log(\frac{n}{\ell}))$ run-time complexity.
+Assume that the bottle sizes are stored in an array $B$, sorted by their capacities in ounces.
+
+\bigskip
+\noindent\textbf{Language requirements. }%
+During tackling this problem, you should follow the programming rules:
+\begin{itemize}
+\item You should use an ANSI C programming language whose source code can run on \texttt{Code ocean} platform. 
+\item Function naming: Begin with the lower character, and every parameters are strong-typed variables (i.e., do not use \texttt{void} typed variables).
+	All functions should have a single return value; thus even if a function will return no values; you should provide \texttt{return} keyword.
+\item Variable naming: Begin with a type-discriminating prefix. For example, if a variable name is for an age and is with an integer type,
+	you need to declare the variable as \texttt{int iAge;}  Especially for string-type variables you are strongly recommended to use the prefix \texttt{sz}.
+	For example, if a variable name is for a name, then \texttt{szName} is a preferable choice.
+\end{itemize}
+
+
+\bigskip
+\noindent\textbf{Input format.} %
+The input is given a text-format file, named \texttt{input.txt} and all strings are separated by blanks.
+The file  describes the sequence of $\ell$ pairs of requests, $(a_i,X_i)_{i\in[1,\ell]}$ and an sorted list $B=(b_1,b_2,\ldots,b_n)$.
+As described above, all $a_i$'s are the real numbers.
+
+
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+$(a_1,X_1)\ (a_2,X_2)\ \ldots \ (a_\ell,X_\ell)$ 
+$(b_1\ b_2\ \ldots\ b_n)$
+\end{lstlisting}
+
+
+
+\bigskip
+\noindent\textbf{Output format.} %
+The output should be given as a text-format file, named \texttt{output.txt}.
+The output file writes a list of triples of processing results, $(b_j,a_i,X_i)$ for 
+some $j\in[1,n]$ and $i\in[1,\ell]$.
+
+
+\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+$(b_{j_1},a_1,X_1)\ (b_{j_2},a_2,X_2)\ \ldots\ (b_{j_\ell},a_\ell,X_\ell)\ $
+\end{lstlisting}
+
+%
+%Roughly speaking, there are dozens of traversal methods of a binary tree. Some of well-known tree traversals include pre-order, post-order, 
+%in-order. 
+%An important application of tree traversal is to evaluate an arithmetic express $E$ without considering parentheses included in $E$.
+%For example, consider an arithmetic expression
+%\begin{align*}
+%E=((((3+1)\ast 3)/((9-5)+2))-((3\ast(7-4))+6)).
+%\end{align*}
+%This expression can be represented as a proper binary tree as follows.
+%\begin{figure}[h]
+%\centering
+%\begin{tikzpicture}[level 1/.style={sibling distance=50mm}, level 2/.style={sibling distance=25mm}, level 3/.style={sibling distance=15mm}, 
+%	level 4/.style={sibling distance=10mm}, level distance = 10mm]
+%
+%\node[arn_n]  (a1) {$-$}
+%	child {node[arn_n] (a2) {$/$}
+%		child{node[arn_n] (a3) {$\ast$}
+%			child{node[arn_n] (a7) {$+$}
+%				child{node[arn_n] (a9) {$3$}}
+%				child{node[arn_n] (a10){$1$}}
+%			}
+%			child{node[arn_n] (a8) {$3$}
+%			}
+%		}
+%		child{node[arn_n] (a4) {$+$}
+%			child{node[arn_n] (a11) {$-$}
+%				child{node[arn_n] (a12) {$9$}}
+%				child{node[arn_n] (a19) {$5$}}
+%			}
+%			child{node[arn_n] (a5) {$2$}}
+%		}
+%	}
+%	child{node[arn_n] (a6) {$+$}
+%		child{node[arn_n] (a13) {$\ast$}
+%			child{node[arn_n] (a15) {$3$}}
+%			child{node[arn_n] (a16) {$-$}
+%				child{node[arn_n] (a17) {$7$}}
+%				child{node[arn_n] (a18) {$4$}}
+%			}
+%		}
+%		child{node[arn_n] (a14) {$6$}}
+%	};
+%%\draw[->,bend right =15,thick,red] (a9.east) to (a7.south);
+%\end{tikzpicture}
+%\end{figure} 
+%
+%Then evaluating the arithmetic express $E$ by the inorder traversal is performed as follows:
+%\begin{figure}[h]
+%\centering
+%\begin{tikzpicture}[level 1/.style={sibling distance=50mm}, level 2/.style={sibling distance=25mm}, level 3/.style={sibling distance=15mm}, 
+%	level 4/.style={sibling distance=10mm}, level distance = 10mm]
+%
+%\node[arn_n]  (a1) {$-$}
+%	child {node[arn_n] (a2) {$/$}
+%		child{node[arn_n] (a3) {$\ast$}
+%			child{node[arn_n] (a7) {$+$}
+%				child{node[arn_n] (a9) {$3$}}
+%				child{node[arn_n] (a10){$1$}}
+%			}
+%			child{node[arn_n] (a8) {$3$}
+%			}
+%		}
+%		child{node[arn_n] (a4) {$+$}
+%			child{node[arn_n] (a11) {$-$}
+%				child{node[arn_n] (a12) {$9$}}
+%				child{node[arn_n] (a19) {$5$}}
+%			}
+%			child{node[arn_n] (a5) {$2$}}
+%		}
+%	}
+%	child{node[arn_n] (a6) {$+$}
+%		child{node[arn_n] (a13) {$\ast$}
+%			child{node[arn_n] (a15) {$3$}}
+%			child{node[arn_n] (a16) {$-$}
+%				child{node[arn_n] (a17) {$7$}}
+%				child{node[arn_n] (a18) {$4$}}
+%			}
+%		}
+%		child{node[arn_n] (a14) {$6$}}
+%	};
+%\draw[->,bend right =15,thick,red] (a9.east) to (a7.260);
+%\draw[->,bend right =15,thick,red] (a7.280) to (a10.west);
+%\draw[->,bend right =15,thick,red] (a10.north) to (a3.260);
+%\draw[->,bend right =15,thick,red] (a3.280) to (a8.west);
+%\draw[->,bend right =15,thick,red] (a8.north) to (a2.260);
+%\draw[->,thick,red] (a2.280) to[out=290,in=100] (a12.north);
+%\draw[->,bend right =15,thick,red] (a12.east) to (a11.260);
+%\draw[->,bend right =15,thick,red] (a11.280) to (a19.west);
+%\draw[->,bend right =15,thick,red] (a19.north) to (a4.260);
+%\draw[->,bend right =15,thick,red] (a4.280) to (a5.west);
+%\draw[->,bend left =15,thick,red] (a5.north) to (a1.260);
+%\draw[->,bend left =15,thick,red] (a1.280) to (a15.north);
+%\draw[->,bend right =15,thick,red] (a15.east) to (a13.260);
+%\draw[->,bend right =15,thick,red] (a13.280) to (a17.north);
+%\draw[->,bend right =15,thick,red] (a17.east) to (a16.260);
+%\draw[->,bend right =15,thick,red] (a16.280) to (a18.west);
+%\draw[->,bend right =15,thick,red] (a18.north) to (a6.260);
+%\draw[->,bend right =15,thick,red] (a6.280) to (a14.west);
+%\end{tikzpicture}
+%\end{figure} 
+%
+%To the contrary, this problem considers an operation in this opposite direction.
+%This is to say, given a binary tree $T$ representing an arithmetic expression
+%you are required to print the expression $E$ by reading the tree $T$.
+%One popular way to do this task is to use a tree traversal known as the \textbf{Euler tour traversal}.
+%
+%Roughly, the Euler tour traversal of a binary tree $T$ can be considered as a ``walk'' around the tree $T$,
+%where start by going from the root $r$ towards its left child $T_L(r)$, thinking of the edges of $T$ as being 
+%``walks'' that you always keep to your left. Refer to Figure \ref{fig:euler}, in the next page. 
+%Yo can see that you stop by each node $v\in T$ three times by the Euler tour which consists of three basic operations:
+%\begin{enumerate}
+%\item Left visit. You will see $v$ before the Euler tour of $v$'s left subtree $T_L(v)$. Denote it by $\mathtt{left}(v)$.
+%\item Below visit. You will also see $v$ immediately after the Euler tour of $v$'s two subtrees). Denote it by $\mathtt{below}(v)$.
+%\item Right visit. You will see again $v$ after the Euler tour of $v$'s right subtree $T_R(v)$. Denote it by  $\mathtt{right}(v)$.
+%\end{enumerate}
+%
+%You may observe that if $v$ is an external node, then those three visiting operations all happen at the same time.
+%Thus the Euler tour traversal is a generalization of pre-order, in-order, and post-order traversals. 
+%In other words, the pre-order traversal of $T$ is equivalent to an Euler tour traversal such that
+%each node has an associated ``visit'' operation occur only when 
+%it is encountered on the left.
+%Similarly, the in-order and post-order traversals of $T$ are equivalent to an Euler tour traversal such that 
+%each node has an associated ``visit'' operation occur only when it is encountered from below or on the right, respectively.
+% 
+%\begin{figure}[h]
+%\centering
+%\begin{tikzpicture}[level 1/.style={sibling distance=50mm}, level 2/.style={sibling distance=25mm}, level 3/.style={sibling distance=15mm}, 
+%	level 4/.style={sibling distance=10mm}, level distance = 10mm,
+%	%scale=0.7, transform shape
+%]
+%
+%\node[arn_n]  (a1) {$-$}
+%	child {node[arn_n] (a2) {$/$}
+%		child{node[arn_n] (a3) {$\ast$}
+%			child{node[arn_n] (a7) {$+$}
+%				child{node[arn_n] (a9) {$3$}}
+%				child{node[arn_n] (a10){$1$}}
+%			}
+%			child{node[arn_n] (a8) {$3$}
+%			}
+%		}
+%		child{node[arn_n] (a4) {$+$}
+%			child{node[arn_n] (a11) {$-$}
+%				child{node[arn_n] (a12) {$9$}}
+%				child{node[arn_n] (a19) {$5$}}
+%			}
+%			child{node[arn_n] (a5) {$2$}}
+%		}
+%	}
+%	child{node[arn_n] (a6) {$+$}
+%		child{node[arn_n] (a13) {$\ast$}
+%			child{node[arn_n] (a15) {$3$}}
+%			child{node[arn_n] (a16) {$-$}
+%				child{node[arn_n] (a17) {$7$}}
+%				child{node[arn_n] (a18) {$4$}}
+%			}
+%		}
+%		child{node[arn_n] (a14) {$6$}}
+%	};
+%\draw[->, blue, rounded corners, dashed, line width=1pt] 
+%($(a1)+(-0.4,0.3)$) -- ($(a2) +(-0.3,0.4)$) -- ($(a3) +(-0.6,0.1)$) -- ($(a7)  +(-0.4,0.3)$) -- 
+%($(a9)  +(-0.5,0.0)$) -- ($(a9)  +(-0.4,-0.35)$) -- ($(a9)  +(0.0,-0.5)$) -- ($(a9)  +(0.4,-0.35)$) --  ($(a9)  +(0.5,0.0)$) --  ($(a7)  +(0.0,-0.4)$) --
+%($(a10)  +(-0.5,0.0)$) --  ($(a10)  +(-0.4,-0.35)$) -- ($(a10)  +(0.0,-0.5)$) --  ($(a10)  +(0.4,-0.35)$) --  ($(a10)  +(0.5,0.0)$) --
+%($(a7)  +(0.5,-0.1)$) --  ($(a3)  +(0.0,-0.7)$) -- ($(a8)  +(-0.5,0.0)$) -- ($(a8)  +(-0.4,-0.35)$) -- ($(a8)  +(0.0,-0.5)$) --
+%($(a8)  +(0.4,-0.35)$) -- ($(a8)  +(0.5,0.0)$) -- ($(a3)  +(0.5,-0.1)$) -- ($(a2)  +(0.0,-0.5)$) -- ($(a4)  +(-0.6,-0.1)$) --
+%($(a11)  +(-0.2,0.4)$) -- ($(a11)  +(-0.45,0.0)$) -- ($(a11)  +(-0.35,-0.2)$) -- ($(a12)  +(0.0,0.5)$) -- ($(a12)  +(-0.25,0.4)$) --
+%($(a12)  +(-0.5,0.0)$) -- ($(a12)  +(-0.4,-0.35)$) -- ($(a12)  +(0.0,-0.5)$) -- ($(a12)  +(0.4,-0.35)$) -- ($(a12)  +(0.5,0.0)$) --
+%($(a11)  +(0.0,-0.4)$) -- ($(a19)  +(-0.5,0.0)$) --
+%($(a19)  +(-0.5,0.0)$) -- ($(a19)  +(-0.4,-0.35)$) -- ($(a19)  +(0.0,-0.5)$) -- ($(a19)  +(0.4,-0.35)$) -- ($(a19)  +(0.5,0.0)$) --
+%($(a11)  +(0.5,-0.1)$) --  ($(a4)  +(0.0,-0.7)$) -- ($(a5)  +(-0.5,0.0)$) -- ($(a5)  +(-0.4,-0.35)$) -- ($(a5)  +(0.0,-0.5)$) --
+%($(a5)  +(0.4,-0.35)$) -- ($(a5)  +(0.5,0.0)$) -- ($(a4)  +(0.4,0.2)$) -- ($(a2)  +(0.7,0.0)$) --
+%($(a1)  +(0.0,-0.3)$) -- ($(a6)  +(-0.7,0.0)$) -- ($(a13)  +(-0.4,0.2)$) -- ($(a15)  +(-0.4,0.2)$) --
+%($(a15)  +(-0.5,0.0)$) --  ($(a15)  +(-0.4,-0.35)$) -- ($(a15)  +(0.0,-0.5)$) --  ($(a15)  +(0.4,-0.35)$) --  ($(a15)  +(0.5,0.0)$) --
+% ($(a13)  +(0.0,-0.6)$) -- ($(a16)  +(-0.4,0.3)$) -- 
+%($(a17)  +(-0.5,0.0)$) -- ($(a17)  +(-0.4,-0.35)$) -- ($(a17)  +(0.0,-0.5)$) -- ($(a17)  +(0.4,-0.35)$) --  ($(a17)  +(0.5,0.0)$) --  ($(a16)  +(0.0,-0.4)$) --
+%($(a18)  +(-0.5,0.0)$) --  ($(a18)  +(-0.4,-0.35)$) -- ($(a18)  +(0.0,-0.5)$) --  ($(a18)  +(0.4,-0.35)$) --  ($(a18)  +(0.5,0.0)$) --
+%($(a16)  +(0.4,0.2)$) --   ($(a13)  +(0.5,0.0)$) -- ($(a6)  +(0.0,-0.4)$) -- ($(a14) +(-0.1,-0.4)$) -- ($(a14) +(0.1,-0.4)$) --
+%($(a14) + (0.3,-0.3)$) -- ($(a14) + (0.5,0.0)$) --  ($(a14) + (0.4,0.2)$) -- ($(a6) + (0.15,0.4)$) --  ($(a1) + (0.5,0.25)$) ;
+%\end{tikzpicture}
+%\caption{Euler tour traversal of a binary tree}\label{fig:euler}
+%\end{figure}  
+%
+%\bigskip
+%The goal in this problem is simply to implement a C program to print a fully parenthesized arithmetic expression $E$ from its 
+%representing binary tree $T$. Your program should implement and invoke the three Euler tour operations $\mathtt{left}(),\mathtt{below}()$, and $\mathtt{right}()$, properly.
+%Assume that you have only six arithmetic operations $+,-,{\ast},/$, {\textasciicircum}, and $\%$.
+%
+%\bigskip
+%\noindent\textbf{Input format.} %
+%The input is given a text-format file, named \texttt{input.txt}. This file describes a binary tree $T$ of $N$ nodes in the level-order manner where each node $v$ is 
+%written by $v=[u_{i1},u_{i2},u_{i3}]$ for the label name of $v$ and its left/right children $u_{i2},u_{i3}$, respectively.
+%Indicating a node without children is by \#.
+%\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+%[$u_{11}$,$u_{12}$,$u_{13}$]
+%[$u_{21}$,$u_{22}$,$u_{23}$]
+%$\cdots$
+%[$u_{N1}$,$u_{N2}$,$u_{N3}$]
+%\end{lstlisting}
+%For example,  the binary tree in Figure~\ref{fig:euler} is given by
+%\begin{lstlisting}[backgroundcolor=\color{white}]
+%[-,/,+]
+%[/,*,+]
+%[+,*,6]
+%[*+,3]
+%[+,-,2]
+%[*,3,-]
+%[6,#,#]
+%[+,3,1]
+%[3,#,#]
+%[-,9,3]
+%[2,#,#]
+%[3,#,#]
+%[-,7,4]
+%[3,#,#]
+%[1,#,#]
+%[9,#,#]
+%[5,#,#]
+%[7,#,#]
+%[4,#,#]
+%\end{lstlisting}
+%
+%
+%\bigskip
+%\noindent\textbf{Output format.} %
+%The output should be given as a text-format file, named \texttt{outputc.txt}, \texttt{outputq.txt}, or \texttt{outputl.txt}.
+%The output file writes a fully parenthesized arithmetic expression.
+%
+%\begin{lstlisting}[backgroundcolor=\color{yellow!40}]
+%$\ast\ast$ The arithmetic expression $\ast\ast$
+%$E=$
+%\end{lstlisting}
+%
+%\newpage
+%\begin{thebibliography}{100}
+%%\addtolength{\leftmargin}{0.2in}
+%%\setlength{\itemindent}{-0.2in}
+%
+%\bibitem[HSAf08]{HSAf08} E. Horowitz, S. Sahni, and S. Anderson-Free, \emph{Fundamentals of Data Structures in C}, Second edition, Silicon Press, 2008. 
+%
+%
+%%\bibitem[Jos27]{Jos27}  Flavius Josephus, \emph{The jewish war  Book III},  Translated by H. S. Thackeray,  Heinemann 1927,
+%%342--366 \& 387--391.
+% \end{thebibliography}            
+\end{document}
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
