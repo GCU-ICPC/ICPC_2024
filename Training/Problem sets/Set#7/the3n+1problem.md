@@ -2,9 +2,9 @@
 
 
 
-This problem was introdcued by Lagarias at the paper, entitled "The $3x+1$ problem and its generalizations" at American mathematical monthly, 92:3-23, 1985.
+This problem was introdcued by J. Lagarias at the paper, entitled "The $3x+1$ problem and its generalizations" at American mathematical monthly, 92:3-23, 1985.  Later, an international conference on the Collatz problem presented its variants: please visit the [site](https://chamberland.math.grinnell.edu/conference/proceedings.html) for downloading documents on them.
 
-Later, an international conference on the Collatz problem presented its variants: please visit the [site](https://chamberland.math.grinnell.edu/conference/proceedings.html).
+
 
 #### Introduction to the problem
 
