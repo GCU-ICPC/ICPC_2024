@@ -18,7 +18,7 @@ For example, a sequence for $n=22$ is computed as followings
 
 $22\mapsto 11\mapsto 34\mapsto 17\mapsto 52\mapsto 26\mapsto 13\mapsto 40\mapsto 20\mapsto 10\mapsto 5\mapsto 16\mapsto 8\mapsto 4\mapsto 2\mapsto 1$
 
-Unfortunately, it is not yet proven that but conjectured that this process will terminate at $n=1$ for every integer $n$. Still, the conjecture is valid for all integers $\leq 1,000,000$. 
+Unfortunately, it is not yet proven, but is conjectured that this process will terminate at $n=1$ for every integer $n$. Fortunately, the conjecture is valid for all integers $\leq 1,000,000$. 
 
 
 
@@ -36,7 +36,7 @@ In the example above, the cycle length of 22 is 16.
 
 __Input__
 
-The input consists of a series of pairs of integers $n$ and $m$, one pair of integers per line. In particular, all integers are positive and $\leq 10^6$
+The input consists of a series of pairs of integers $n$ and $m$, one pair of integers per line. In particular, all integers are positive and $\leq 10^6$ due to the conjecture as above discussed.
 
 __Output__
 
