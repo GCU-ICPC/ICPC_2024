@@ -51,3 +51,8 @@ __Sample input/output__
 900 1000				900 1000 174
 ```
 
+
+
+#### Hints
+
+To my experience,  no easy ways to solve this problem. Just use loop and calculations; however, you may have some tricks to save loop iterations by paying attention to even and odd computation.
