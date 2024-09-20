@@ -17,8 +17,8 @@ __Example__
  Let $P_1,P_2$, and $P_3$ be political parties and $h_i$ be their hartal parameter, ane let $N$ be a period of days. Assume that $h_1=3,h_2=4,h_3=8$ and $N=14$. The following table is a simulation of three parties during two weeks, i.e., $N=14$. For this purpose, we always start the simulation on a Sunday and assume that no strikes are allowed on either Fridays or Saturdays. See the below:
 
 ```
-		1   2   3   4   5   6   7   8   9   10  11  12  13  14     
-Days            Su  Mo  Tu  We  Th  Fr  Sa  Su  Mo  Tu  We  Th  Fr  Sa
+	1   2   3   4   5   6   7   8   9   10  11  12  13  14     
+Days    Su  Mo  Tu  We  Th  Fr  Sa  Su  Mo  Tu  We  Th  Fr  Sa
 Party 1         x           x           x           x
 Party 2             x               x               x 
 Party 3                             x
