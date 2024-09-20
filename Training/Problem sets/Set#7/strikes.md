@@ -18,7 +18,7 @@ __Example__
 
 ```
 		1   2   3   4   5   6   7   8   9   10  11  12  13  14     
-Days    Su  Mo  Tu  We  Th  Fr  Sa  Su  Mo  Tu  We  Th  Fr  Sa
+Days            Su  Mo  Tu  We  Th  Fr  Sa  Su  Mo  Tu  We  Th  Fr  Sa
 Party 1         x           x           x           x
 Party 2             x               x               x 
 Party 3                             x
