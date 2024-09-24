@@ -2,7 +2,7 @@
 
 The goal of this problem is that given an $m\times n$ lattice of English letters and a list of English words, find the location in the lattice at which the word can be found.
 
-A word matches a straight, contiguous line of letters in the lattice. A word can match the letters in the lattice regardless of case (i.e., Upper case and lowcase letters are considered as the same). The matching can be found in any of the 8 horizontal, vertical, and diagonal directions through the lattice.
+A word matches a straight, contiguous line of letters in the lattice. A word can match the letters in the lattice regardless of case (i.e., upper case and lowcase letters are considered as the same). The matching can be found in any of the 8 horizontal, vertical, and diagonal directions through the lattice.
 
 
 
