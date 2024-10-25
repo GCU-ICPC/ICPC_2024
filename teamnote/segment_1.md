@@ -1,3 +1,22 @@
+####순서####
+```
+1. 파일 입출력 (File I/O)
+2. Convex Hull (Graham's Scan)
+3. CCW (선분 교차 알고리즘)
+4. 아스키 코드 변환
+5. 이진 트리 (Binary Tree)
+6. Bfs
+7. Dfs
+8. Dijkstra
+9. Union & Find
+10. Prioirty Queue
+11. Millar Rabin
+12. unorderd_map
+13. Minimum Spanning Tree
+14. Palindrome
+15. Segment Tree
+```
+
 
 ### 1. **파일 입출력 (File I/O)**
 
@@ -133,15 +152,55 @@ int main() {
 }
 ```
 
+### 6.  **BFS**
+```cpp
 
+```
 
+### 7.  **DFS**
+```cpp
 
+```
+### 8.  **Dijkstra**
+```cpp
 
+```
 
+### 9.  **Union & Find**
+```cpp
 
+```
 
+### 10.  **Priority Queue**
+```cpp
 
+```
 
+### 11.  **Unordered_map**
+```cpp
+// 오름차순
+
+```
+
+```cpp
+// 내림차순
+
+```
+
+### 12.  **Minimum Spanning Tree**
+```cpp
+
+```
+
+### 13.  **Palindrome**
+```cpp
+
+```
+
+### 14. Segement Tree
+```cpp
+
+```
 
 
 
