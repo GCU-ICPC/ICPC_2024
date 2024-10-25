@@ -24,7 +24,7 @@
 21.Basic arithmetic
 22. KMP
 ```
-
+* * *
 
 ### 1. **파일 입출력 (File I/O)**
 
@@ -59,6 +59,7 @@ int main() {
     return 0;
 }
 ```
+* * *
 
 ### 2. **Convex Hull (Graham's Scan)**
 
@@ -85,6 +86,7 @@ vector<Point> convexHull(vector<Point>& p) {
     return h;
 }
 ```
+* * *
 
 ### 3. **CCW (선분 교차 알고리즘)**
 
@@ -114,6 +116,7 @@ int main() {
     return 0;
 }
 ```
+* * *
 
 ### 4. **아스키 코드 변환**
 
@@ -129,6 +132,7 @@ int main() {
     return 0;
 }
 ```
+* * *
 
 ### 5. **이진 트리 (Binary Tree)**
 
@@ -159,6 +163,7 @@ int main() {
     return 0;
 }
 ```
+* * *
 
 ### 6.  **BFS**
 ```cpp
@@ -211,6 +216,7 @@ int main()
     cout << dist[k];
 }
 ```
+* * *
 
 ### 7.  **DFS using recursion**
 ```cpp
@@ -247,6 +253,8 @@ int main()
     DFS(adj, 1, visited);
 }
 ```
+* * *
+
 ### 8.  **Dijkstra**
 ```cpp
 #include <iostream>
@@ -408,6 +416,7 @@ int main(){
 	return 0;
 }
 ```
+* * *
 
 ### 9.  **Union & Find**
 ```cpp
@@ -438,6 +447,7 @@ void union(int x, int y) {
     parent[rootX] = rootY;
 }
 ```
+* * *
 
 ### 10.  **Priority Queue**
 ```cpp
@@ -472,6 +482,7 @@ int main() {
 	return 0;
 }
 ```
+* * *
 
 ### 11. **Millar Rabin**
 ```cpp
@@ -506,6 +517,7 @@ namespace miller_rabin{ // O(logP)
 	}
 }
 ```
+* * *
 
 ### 12. **Unordered_map**
 ```cpp
@@ -566,6 +578,7 @@ int main()
 }
 
 ```
+* * *
 
 ### 12-2. **value값을 기준으로 정렬**
 ```cpp
@@ -598,6 +611,7 @@ int main()
     }
 }
 ```
+* * *
 
 ### 13.  **Minimum Spanning Tree**
 ```cpp
@@ -641,6 +655,7 @@ int main(void)
     cout << ans;
 }
 ```
+* * *
 
 ### 14.  **Palindrome**
 ```cpp
@@ -677,6 +692,7 @@ int main() {
     return 0;
 }
 ```
+* * *
 
 ### 15. **Segement Tree**
 ```cpp
@@ -759,6 +775,7 @@ int main(void)
     }
 }
 ```
+* * *
 
 ### 16. **dp_opt**
 ```cpp
@@ -793,6 +810,7 @@ void do_dp(int t, int s, int e, int p, int q) {
     // 2, 3에 대해 가능한 k의 후보는 조건에 의해 줄어든다.
 }
 ```
+* * *
 
 ### 17. **merge sort**
 ```cpp
@@ -824,6 +842,7 @@ template <typename T> void merge_sort(T* st, T* en, bool(*cmp)(T, T) = default_c
 	return;
 }
 ```
+* * *
 
 ### 18. **myswap**
 ```cpp
@@ -831,6 +850,7 @@ template <typename T> void myswap(T &a, T &b) {
 	T tmp = a; a = b; b = tmp;
 }
 ```
+* * *
 
 ### 19. **vector**
 ```cpp
@@ -861,6 +881,8 @@ public:
 	T &operator[](int idx) { return arr[idx]; }
 };
 ```
+* * *
+
 ### 20. **suffix array**
 ```cpp
 const int MAXN = 500005;
@@ -937,6 +959,7 @@ int main() {
 	A.read(S); A.solve();
 }
 ```
+* * *
 
 ### 21. **basic arithmetic**
 ```cpp
@@ -1024,6 +1047,7 @@ void calc_range_modinv(int n, int mod, int ret[]) {
         ret[i] = (ll)(mod - mod/i) * ret[mod%i] % mod;
 }
 ```
+* * *
 
 ### 22. **kmp**
 ```cpp
