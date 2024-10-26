@@ -23,6 +23,8 @@
 20. Suffix array
 21.Basic arithmetic
 22. KMP
+23. 에라토스테네스의 체체
+24. next permutation
 ```
 * * *
 
@@ -1098,5 +1100,77 @@ int main(void)
     KMP(t, p);
     cout << ans << "\n";
     for (ll to : pos) cout << to << "\n";
+}
+```
+* * *
+
+### 23. **에라테스테네스의 체**
+```cpp
+// C++ program to print all primes smaller than or equal to
+// n using Sieve of Eratosthenes
+#include <bits/stdc++.h>
+using namespace std;
+
+void SieveOfEratosthenes(int n)
+{
+    // Create a boolean array "prime[0..n]" and initialize
+    // all entries it as true. A value in prime[i] will
+    // finally be false if i is Not a prime, else true.
+    vector<bool> prime(n + 1, true);
+
+  for (int p = 2; p * p <= n; p++) {
+
+
+        // If prime[p] is not c
+
+hanged, then it is a prime
+        if (prime[p] == true) {
+            // Update all multiples of p greater than or
+            // equal to the square of it numbers which are
+            // multiple of p and are less than p^2 are
+            // already been marked.
+            for (int i = p * p; i <= n; i += p)
+                prime[i] = false;
+        }
+    }
+
+    // Print all prime numbers
+    for (int p = 2; p <= n; p++)
+        if (prime[p])
+            cout << p << " ";
+}
+
+// Driver Code
+int main()
+{
+    int n = 30;
+    cout << "Following are the prime numbers smaller "
+         << " than or equal to " << n << endl;
+    SieveOfEratosthenes(n);
+    return 0;
+}
+```
+* * *
+
+### 24. **next_permutation**
+```cpp
+// 예시 - {1, 2, 3, 4} 중 2개의 원소를 고르는 모든 경우의 수 출력하기
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+ 
+int main() {
+    vector<int> s{ 1, 2, 3, 4 };
+    vector<int> temp{ 1, 1, 0, 0 };
+ 
+    do {
+        for (int i = 0; i < s.size(); ++i) {
+            if (temp[i] == 1)
+                cout << s[i] << ' ';
+        }
+        cout << endl;
+    } while (prev_permutation(temp.begin(), temp.end()));
 }
 ```
