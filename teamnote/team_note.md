@@ -25,6 +25,7 @@
 22. KMP
 23. 에라토스테네스의 체체
 24. next permutation
++) 25. Iteractive
 ```
 * * *
 
@@ -1174,11 +1175,10 @@ int main() {
     } while (prev_permutation(temp.begin(), temp.end()));
 }
 ```
+* * *
 
-### ex1. interactive
+### +) 25. **Interactive**
 ```cpp
-
-
 #include <bits/stdc++.h>
 using namespace std;
 
