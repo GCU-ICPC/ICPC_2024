@@ -1174,3 +1174,61 @@ int main() {
     } while (prev_permutation(temp.begin(), temp.end()));
 }
 ```
+
+### ex1. interactive
+```cpp
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int arr[11];
+
+int main() {
+	int n;
+	cin >> n;
+	int chance = n - 2;
+
+	arr[0] = 0;
+	arr[n - 1] = 1;
+	int temp = 0;
+	for (int i = 1; i <= n - 2; i++)
+		{
+		cout << "? " << i << '\n';
+		cout << std::flush;
+		cin >> temp;
+		if (i == 1 && temp == 1)
+		{
+			cout << "! " << i << '\n';
+			cout << std::flush;
+			return 0;
+		}
+		if (i == n - 2 && temp == 0)
+		{
+			cout << "! " << n - 1 << '\n';
+			cout << std::flush;
+			return 0;
+		}
+
+		if (temp == 0)
+		{
+			arr[i] = temp;
+			continue;
+		}
+		else if (temp == 1)
+		{
+			if (arr[i - 1] == 0)
+			{
+				cout << "! " << i << '\n';
+				cout << std::flush;
+				return 0;
+			}
+			else {arr[i] = temp;}
+		}
+	}
+	cout << "! " << -1 << '\n';
+	cout << std::flush;
+}
+
+
+```
